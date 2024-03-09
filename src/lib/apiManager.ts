@@ -44,4 +44,4 @@ export async function updateData(data: DATA) {
       console.error('Error updating data:', error);
       throw error;
     }
-  }
+}
