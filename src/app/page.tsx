@@ -8,7 +8,16 @@ export default function Home() {
       <Navbar />
       <div className="content-wrapper">
         <DataList />
-        <Add title={'Add List'} />
+        <Add 
+          btnTitle='Add List' 
+          title="Add" 
+          description="Add your new todo." 
+          titleValue="" 
+          descValue=""
+          dueDateVal={null}
+          id={null}
+          fromWhere={false}
+        />
       </div>
     </main>
   )

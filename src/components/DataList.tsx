@@ -17,14 +17,9 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import Add from '@/components/Add'
-
-interface DATA {
-  title: string,
-  description: string,
-  dueDate: string,
-  id: number,
-  isCompleted: boolean
-}
+import DATA from '@/app/DATA'
+import { Button } from '@/components/ui/button'
+import { deleteData } from '@/lib/apiManager'
 
 export default function DataList() {
   const [data, setData] = useState([])
@@ -37,22 +32,19 @@ export default function DataList() {
 
   // console.log({data})
 
-  // const updatedData: DATA = { id: 2, description: 'Updated task 2', isCompleted: false, dueDate: "7 Maret 2024" };
-  // updateData(updatedData)
-  //   .then(data => {
-  //     // Handle the updated data here
-  //     console.log('Updated data:', data);
-  //   })
-  //   .catch(error => {
-  //     // Handle any errors that occur during the update
-  //     console.error('Error updating data:', error);
-  //   });
+  const deleteTodo = (id: number) =>{
+    console.log(id)
+    deleteData(id).then(()=>{
+      getData().then((result) =>{
+        setData(result)
+      })
+    })
+  }
 
   return (
-    <ScrollArea className="todoList rounded-md border ml-10">
+    <ScrollArea className="todoList rounded-md border">
       {data.map((dataList: DATA, i)=>{
         return(
-          
             <Card key={i} className='flex-auto ml-10 mr-10 mt-5 mb-5'>
               <ResizablePanelGroup
                 direction='horizontal'
@@ -63,12 +55,23 @@ export default function DataList() {
                     <CardDescription>{dataList.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p>Due Date: {format(dataList.dueDate, 'PPP')}</p>
+                    <p>Due Date: {dataList.dueDate? format(dataList.dueDate, 'PPP'): 'no due date'}</p>
                   </CardContent>
                 </ResizablePanel>
+                {/* <ResizableHandle /> */}
                 <ResizablePanel defaultSize={25}>
-                  <CardFooter className="flex h-full items-center justify-center p-6">
-                    <Add title={'Edit'}/>
+                  <CardFooter className="flex h-full items-center justify-center gap-0 p-6 ">
+                    <Add 
+                      btnTitle='Edit' 
+                      title='Edit' 
+                      description='Edit your todo list.' 
+                      titleValue={dataList.title} 
+                      descValue={dataList.description}
+                      dueDateVal={dataList.dueDate}
+                      id={dataList.id}
+                      fromWhere={true}
+                    />
+                  <Button variant="destructive" onClick={()=>{deleteTodo(dataList.id)}}>Delete</Button>
                   </CardFooter>
                 </ResizablePanel>
               </ResizablePanelGroup>

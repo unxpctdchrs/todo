@@ -47,10 +47,10 @@ export async function POST(request: Request) {
     try {
         // Parse request body
         const body = await request.json();
-        const { description, isCompleted } = body;
+        const { title, description, dueDate } = body;
 
         // Execute INSERT query to add new record
-        const results = await executeQuery("INSERT INTO list (description, isCompleted) VALUES (?, ?)", [description, isCompleted]);
+        const results = await executeQuery("INSERT INTO list (title, description, dueDate) VALUES (?, ?, ?)", [title, description, dueDate]);
         // Return results with 200 status code for successful creation
         return NextResponse.json(results, { status: 200 });
     } catch (error) {
@@ -69,10 +69,10 @@ export async function PUT(request: Request) {
     try {
         // Parse request body
         const body = await request.json();
-        const { id, description, isCompleted } = body;
+        const { title, description, dueDate, id, isCompleted } = body;
 
         // Execute UPDATE query to update existing record
-        const results = await executeQuery("UPDATE list SET description = ?, isCompleted = ? WHERE id = ?", [description, isCompleted, id]);
+        const results = await executeQuery("UPDATE list SET title = ?, description = ?, isCompleted = ?, dueDate = ? WHERE id = ?", [title, description, isCompleted, dueDate, id]);
         // Return results with 200 status code for successful update
         return NextResponse.json(results, { status: 200 });
     } catch (error) {

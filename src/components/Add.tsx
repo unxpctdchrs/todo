@@ -1,6 +1,6 @@
-'use client'
-import { Button } from "@/components/ui/button"
-import { useState, useEffect } from "react"
+"use client";
+import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 import {
   Drawer,
   DrawerClose,
@@ -10,69 +10,125 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Textarea } from "@/components/ui/textarea"
-import { Input } from "@/components/ui/input"
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { format } from "date-fns"
-import { cn } from "@/lib/utils"
-import { Calendar } from "@/components/ui/calendar"
+} from "@/components/ui/drawer";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
+import { updateData, insertData } from "@/lib/apiManager";
+import DATA from "@/app/DATA";
+import { toast } from "./ui/use-toast";
 
-interface datatype{
-  title: string
+interface AddProps {
+  btnTitle: string;
+  title: string;
+  description: string;
+  titleValue: string;
+  descValue: string;
+  dueDateVal: Date | null;
+  id: number | null;
+  fromWhere: boolean
 }
 
-export default function Add(props: datatype) {
-  const [date, setDate] = useState<Date>()
-  // function onSubmit(data: z.infer<typeof FormSchema>) {
-  //   toast({
-  //     title: "You submitted the following values:",
-  //     description: (
-  //       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-  //         <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-  //       </pre>
-  //     ),
-  //   })
-  // }
+export default function Add(props: AddProps) {
+  const [ dateVal, setDateVal] = useState<Date | null>(props.dueDateVal);
+  const [ titleVal, setTitleVal ] = useState(props.titleValue || '')
+  const [ descriptionVal, setDescriptionVal ] = useState(props.descValue || '')
+
+  const onclick = () =>{
+    const formData = {
+      title: titleVal,
+      description: descriptionVal,
+      date: dateVal
+    }
+    // console.log(formData)
+
+    if (props.fromWhere == true){
+      // const updatedData: DATA = { id: 2, description: 'Updated task 2', isCompleted: false, dueDate: new Date(), title: "test69" }
+      const updatedData: DATA = { id: props.id, title: titleVal, description: descriptionVal, dueDate: dateVal, isCompleted: false }
+      updateData(updatedData)
+        .then(data => {
+          // Handle the updated data here
+          // console.log('Updated data:', data);
+          window.location.reload()
+        })
+        .catch(error => {
+          // Handle any errors that occur during the update
+          // console.error('Error updating data:', error);
+        });
+    } else{
+      const insertedData: DATA = {id: props.id, title: titleVal, description: descriptionVal, dueDate: dateVal, isCompleted: false}
+      insertData(insertedData)
+        .then(data =>{
+          // console.log('Inserted data:', data)
+          window.location.reload()
+        })
+        .catch(error => {
+          // console.error('Error inserting data:', error)
+        })
+    }
+    
+  }
 
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button className="mr-40" variant="outline">{props.title}</Button>
+        <Button className="mr-40" variant="outline">
+          {props.btnTitle}
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
-            <DrawerTitle>Add List</DrawerTitle>
-            <DrawerDescription>Add your new todo list.</DrawerDescription>
+            <DrawerTitle>{props.title} List</DrawerTitle>
+            <DrawerDescription>{props.description}</DrawerDescription>
           </DrawerHeader>
           <div className="p-4 pb-0">
             <div className="flex items-center flex-col">
-              <Input placeholder="Title" className="mb-5"/>
-              <Textarea placeholder="Write your description here." className="mb-5"/>
+              <Input
+                placeholder="Title"
+                className="mb-5"
+                value={titleVal}
+                onChange={(e) => setTitleVal(e.target.value)}
+              />
+              <Textarea
+                placeholder="Write your description here."
+                className="mb-5"
+                value={descriptionVal}
+                onChange={(e) => setDescriptionVal(e.target.value)}
+              />
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
                     className={cn(
                       "w-full justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
+                      !dateVal && "text-muted-foreground"
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    {dateVal ? (
+                      format(dateVal, "PPP")
+                    ) : (
+                      <span>Pick a due date</span>
+                    )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={date}
-                    onSelect={setDate}
+                    selected={dateVal ?? undefined}
+                    onSelect={(date: Date | undefined) => {
+                      if(date){
+                        setDateVal(date)}
+                      }}
                     initialFocus
                   />
                 </PopoverContent>
@@ -80,7 +136,7 @@ export default function Add(props: datatype) {
             </div>
           </div>
           <DrawerFooter>
-            <Button type="submit">Submit</Button>
+            <Button type="submit" onClick={onclick}>Submit</Button>
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>
             </DrawerClose>
@@ -88,5 +144,5 @@ export default function Add(props: datatype) {
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }

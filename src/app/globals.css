@@ -147,6 +147,7 @@
   width: 75%;
   height: 85vh;
   margin-top: 3vh;
+  margin-left: 5vh;
 }
 
 .content-wrapper{
@@ -155,4 +156,19 @@
   justify-content: space-between;
   align-items: center;
   /* border: 1px solid red; */
+}
+
+@media only screen and (max-width:430px){
+  .todoList{
+    height: 75vh;
+    width: 90%;
+    margin-left: 0;
+  }
+  
+  .content-wrapper{
+    flex-direction: column;
+    gap: 2vh;
+    align-items: center;
+    justify-content: center;
+  }
 }
