@@ -21,10 +21,9 @@ async function executeQuery(query: string, values: any[] = []) {
 }
 
 export async function GET(request: Request) {
-
     try {
         // Execute SELECT query to retrieve data
-        const results = await executeQuery("SELECT * FROM list");
+        const results = await executeQuery(`SELECT * FROM list`);
 
         // return the results as a JSON API response
         return NextResponse.json(results)
@@ -40,7 +39,6 @@ export async function GET(request: Request) {
         return NextResponse.json(response, { status: 200 })
     }
 }
-
 
 // Handler for POST request
 export async function POST(request: Request) {
@@ -87,22 +85,23 @@ export async function PUT(request: Request) {
 }
 
 // Handler for DELETE request
-export async function DELETE(request: Request) {
+export async function DELETE(request: Request, { params }: {params: {id: string}}) {
     try {
-        // Parse request body
+        // Parse request body or query parameters if needed
         const { id } = await request.json();
-
+    
         // Execute DELETE query to remove record
-        const results = await executeQuery("DELETE FROM list WHERE id = ?", [id]);
-        // Return results with 200 status code for successful deletion
-        return NextResponse.json(results, { status: 200 });
-    } catch (error) {
+        await executeQuery("DELETE FROM list WHERE id = ?", [params.id]);
+    
+        // Return results with a 200 status code for successful deletion
+        return NextResponse.json({ status: 200, message: `Record with id ${params} deleted successfully` });
+      } catch (error) {
         // Handle errors
         console.log('ERROR: API - ', (error as Error).message);
         const response = {
-            error: (error as Error).message,
-            returnedStatus: 200,
+          error: (error as Error).message,
+          returnedStatus: 500,
         };
-        return NextResponse.json(response, { status: 200 });
-    }
+        return NextResponse.json(response, { status: 500 });
+      }    
 }

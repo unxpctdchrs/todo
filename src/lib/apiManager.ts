@@ -1,25 +1,25 @@
 'use server'
-
-interface DATA {
-    title: string,
-    description: string,
-    dueDate: string,
-    id: number,
-    isCompleted: boolean
-}
+import DATA from '@/app/DATA'
 
 export async function getData() {
-    try {
-        const res = await fetch('http://localhost:3000/api/mysql/todo');
-        const data = await res.json();
-        // Handle the data here
-        // console.log(data);
-        return data; // Return the data if needed
-    } catch (error) {
-        // Handle any errors that occur during the HTTP request
-        console.error('Error fetching data:', error);
-        throw error; // Re-throw the error if needed
-    }
+  try {
+      const res = await fetch('http://localhost:3000/api/mysql/todo');
+      if (!res.ok) {
+          throw new Error('Failed to fetch data');
+      }
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Unexpected response format');
+      }
+      const data = await res.json();
+      // Handle the data here
+      // console.log(data);
+      return data; // Return the data if needed
+  } catch (error) {
+      // Handle any errors that occur during the HTTP request
+      console.error('Error fetching data:', error);
+      throw error; // Re-throw the error if needed
+  }
 }
 
 export async function updateData(data: DATA) {
@@ -69,7 +69,7 @@ export async function insertData(data: DATA){
 
 export async function deleteData(id: number) {
   try {
-    const response = await fetch(`http://localhost:3000/api/mysql/todo/${id}`,{
+    const response = await fetch(`http://localhost:3000/api/mysql/todo?id=${id}`,{
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ export async function deleteData(id: number) {
     })
 
     if(!response.ok){
-      throw new Error('Error Deleting Data')
+      throw new Error(`Error Deleting Data ${response.status} - ${response.statusText}`)
     }
 
     const deletedData = await response.json()
