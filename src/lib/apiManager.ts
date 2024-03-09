@@ -1,6 +1,7 @@
 'use server'
 
 interface DATA {
+    title: string,
     description: string,
     dueDate: string,
     id: number,
@@ -13,7 +14,7 @@ export async function getData() {
         const res = await fetch('http://localhost:3000/api/mysql/todo');
         const data = await res.json();
         // Handle the data here
-        console.log(data);
+        // console.log(data);
         return data; // Return the data if needed
     } catch (error) {
         // Handle any errors that occur during the HTTP request

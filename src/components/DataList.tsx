@@ -10,8 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { format } from "date-fns"
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import Add from '@/components/Add'
 
 interface DATA {
+  title: string,
   description: string,
   dueDate: string,
   id: number,
@@ -44,21 +52,29 @@ export default function DataList() {
     <ScrollArea className="todoList rounded-md border ml-10">
       {data.map((dataList: DATA, i)=>{
         return(
-          <Card key={i} className='flex-auto w-5/6 m-10'>
-            <CardHeader>
-              <CardTitle>Task ID: {dataList.id}</CardTitle>
-              <CardDescription>{dataList.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>{dataList.dueDate}</p>
-            </CardContent>
-            <CardFooter>
-              <p>isCompleted: {dataList.isCompleted}</p>
-            </CardFooter>
-          </Card>
+          
+            <Card key={i} className='flex-auto ml-10 mr-10 mt-5 mb-5'>
+              <ResizablePanelGroup
+                direction='horizontal'
+              >
+                <ResizablePanel defaultSize={75}>
+                  <CardHeader>
+                    <CardTitle>{dataList.title}</CardTitle>
+                    <CardDescription>{dataList.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Due Date: {format(dataList.dueDate, 'PPP')}</p>
+                  </CardContent>
+                </ResizablePanel>
+                <ResizablePanel defaultSize={25}>
+                  <CardFooter className="flex h-full items-center justify-center p-6">
+                    <Add title={'Edit'}/>
+                  </CardFooter>
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            </Card> 
         ) 
       })}
-      
     </ScrollArea>
   )
 }
