@@ -3,7 +3,7 @@ import DATA from '@/app/DATA'
 
 export async function getData() {
   try {
-      const res = await fetch('http://localhost:3000/api/mysql/todo');
+      const res = await fetch('/api/mysql/todo');
       if (!res.ok) {
           throw new Error('Failed to fetch data');
       }
@@ -24,7 +24,7 @@ export async function getData() {
 
 export async function updateData(data: DATA) {
     try {
-      const response = await fetch('http://localhost:3000/api/mysql/todo', {
+      const response = await fetch('/api/mysql/todo', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export async function updateData(data: DATA) {
 
 export async function insertData(data: DATA){
   try {
-    const response = await fetch('http://localhost:3000/api/mysql/todo',{
+    const response = await fetch('/api/mysql/todo',{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ export async function insertData(data: DATA){
 
 export async function deleteData(id: number) {
   try {
-    const response = await fetch(`http://localhost:3000/api/mysql/todo/${id}`,{
+    const response = await fetch(`/api/mysql/todo/${id}`,{
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json'
