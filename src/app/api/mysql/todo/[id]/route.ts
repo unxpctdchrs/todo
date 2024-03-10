@@ -72,7 +72,7 @@ export async function PUT(request: Request) {
     const data = await request.json();
     const query = "UPDATE list SET title = ?, description = ?, dueDate = ?, isCompleted = ? WHERE id = ?";
     const values = [data.title, data.description, data.dueDate, data.isCompleted, id];
-    const results: RowDataPacket[] = await executeQuery(query, values);
+    const results: RowDataPacket = await executeQuery(query, values) as RowDataPacket;
     
     if (results.affectedRows === 0) {
         return NextResponse.json({ "message": "Id not found" });
