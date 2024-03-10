@@ -52,7 +52,7 @@ export default function Add(props: AddProps) {
 
     if (props.fromWhere == true){
       // const updatedData: DATA = { id: 2, description: 'Updated task 2', isCompleted: false, dueDate: new Date(), title: "test69" }
-      const updatedData: DATA = { id: props.id, title: titleVal, description: descriptionVal, dueDate: dateVal, isCompleted: false }
+      const updatedData: DATA = { id: props.id as number, title: titleVal, description: descriptionVal, dueDate: dateVal, isCompleted: false }
       updateData(updatedData)
         .then(data => {
           window.location.reload()
@@ -61,7 +61,7 @@ export default function Add(props: AddProps) {
           // console.error('Error updating data:', error);
         });
     } else{
-      const insertedData: DATA = {id: props.id, title: titleVal, description: descriptionVal, dueDate: dateVal, isCompleted: false}
+      const insertedData: DATA = {id: props.id as number, title: titleVal, description: descriptionVal, dueDate: dateVal, isCompleted: false}
       insertData(insertedData)
         .then(data =>{
           // console.log('Inserted data:', data)
