@@ -14,7 +14,7 @@ const getBaseUrl = () => {
 };
 
 const BASE_URL = getBaseUrl();
-const URL = `${BASE_URL}/api/mysql/todo/`;
+const URL = `https://todo-tau-sage.vercel.app/api/mysql/todo/`;
 
 export async function getData() {
   try {
@@ -27,8 +27,6 @@ export async function getData() {
           throw new Error('Unexpected response format');
       }
       const data = await res.json();
-      // Handle the data here
-      // console.log(data);
       return data;
   } catch (error) {
       // Handle any errors that occur during the HTTP request
