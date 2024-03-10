@@ -17,6 +17,7 @@ export default function Home() {
           dueDateVal={null}
           id={null}
           fromWhere={false}
+          margin="mr-40 sm:mr-11 md:mr-16 lg:mr-20 xl:mr-24 2xl:mr-40"
         />
       </div>
     </main>

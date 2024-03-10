@@ -20,7 +20,7 @@ async function executeQuery(query: string, values: any[] = []) {
     }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
     try {
         // Execute SELECT query to retrieve data
         const results = await executeQuery(`SELECT * FROM list`);

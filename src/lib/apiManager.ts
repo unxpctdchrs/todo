@@ -69,7 +69,7 @@ export async function insertData(data: DATA){
 
 export async function deleteData(id: number) {
   try {
-    const response = await fetch(`http://localhost:3000/api/mysql/todo?id=${id}`,{
+    const response = await fetch(`http://localhost:3000/api/mysql/todo/${id}`,{
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json'

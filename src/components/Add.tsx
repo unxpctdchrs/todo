@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/popover";
 import { updateData, insertData } from "@/lib/apiManager";
 import DATA from "@/app/DATA";
-import { toast } from "./ui/use-toast";
 
 interface AddProps {
   btnTitle: string;
@@ -35,6 +34,7 @@ interface AddProps {
   dueDateVal: Date | null;
   id: number | null;
   fromWhere: boolean
+  margin:string
 }
 
 export default function Add(props: AddProps) {
@@ -55,12 +55,9 @@ export default function Add(props: AddProps) {
       const updatedData: DATA = { id: props.id, title: titleVal, description: descriptionVal, dueDate: dateVal, isCompleted: false }
       updateData(updatedData)
         .then(data => {
-          // Handle the updated data here
-          // console.log('Updated data:', data);
           window.location.reload()
         })
         .catch(error => {
-          // Handle any errors that occur during the update
           // console.error('Error updating data:', error);
         });
     } else{
@@ -80,7 +77,7 @@ export default function Add(props: AddProps) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button className="mr-40" variant="outline">
+        <Button className={`${props.margin}`} variant="outline">
           {props.btnTitle}
         </Button>
       </DrawerTrigger>
@@ -136,7 +133,9 @@ export default function Add(props: AddProps) {
             </div>
           </div>
           <DrawerFooter>
-            <Button type="submit" onClick={onclick}>Submit</Button>
+            <DrawerClose asChild>
+              <Button type="submit" onClick={onclick}>Submit</Button>
+            </DrawerClose>
             <DrawerClose asChild>
               <Button variant="outline">Cancel</Button>
             </DrawerClose>

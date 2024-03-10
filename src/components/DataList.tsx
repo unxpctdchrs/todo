@@ -42,42 +42,43 @@ export default function DataList() {
   }
 
   return (
-    <ScrollArea className="todoList rounded-md border">
-      {data.map((dataList: DATA, i)=>{
-        return(
-            <Card key={i} className='flex-auto ml-10 mr-10 mt-5 mb-5'>
-              <ResizablePanelGroup
-                direction='horizontal'
-              >
-                <ResizablePanel defaultSize={75}>
-                  <CardHeader>
-                    <CardTitle>{dataList.title}</CardTitle>
-                    <CardDescription>{dataList.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>Due Date: {dataList.dueDate? format(dataList.dueDate, 'PPP'): 'no due date'}</p>
-                  </CardContent>
-                </ResizablePanel>
-                {/* <ResizableHandle /> */}
-                <ResizablePanel defaultSize={25}>
-                  <CardFooter className="flex h-full items-center justify-center gap-0 p-6 ">
-                    <Add 
-                      btnTitle='Edit' 
-                      title='Edit' 
-                      description='Edit your todo list.' 
-                      titleValue={dataList.title} 
-                      descValue={dataList.description}
-                      dueDateVal={dataList.dueDate}
-                      id={dataList.id}
-                      fromWhere={true}
-                    />
-                  <Button variant="destructive" onClick={()=>{deleteTodo(dataList.id)}}>Delete</Button>
-                  </CardFooter>
-                </ResizablePanel>
-              </ResizablePanelGroup>
-            </Card> 
-        ) 
-      })}
-    </ScrollArea>
-  )
+      <ScrollArea className="todoList rounded-md border">
+        {data.map((dataList: DATA, i)=>{
+          return(
+              <Card key={i} className='flex-auto ml-10 mr-10 mt-5 mb-5'>
+                <ResizablePanelGroup
+                  direction='horizontal'
+                >
+                  <ResizablePanel defaultSize={75}>
+                    <CardHeader>
+                      <CardTitle>{dataList.title}</CardTitle>
+                      <CardDescription>{dataList.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p>Due Date: {dataList.dueDate? format(dataList.dueDate, 'PPP'): 'no due date'}</p>
+                    </CardContent>
+                  </ResizablePanel>
+                  {/* <ResizableHandle /> */}
+                  <ResizablePanel defaultSize={25}>
+                    <CardFooter className="flex h-full items-center justify-center p-6 ">
+                      <Add 
+                        btnTitle='Edit' 
+                        title='Edit' 
+                        description='Edit your todo list.' 
+                        titleValue={dataList.title} 
+                        descValue={dataList.description}
+                        dueDateVal={dataList.dueDate}
+                        id={dataList.id}
+                        fromWhere={true}
+                        margin='mr-10'
+                      />
+                    <Button variant="destructive" onClick={()=>{deleteTodo(dataList.id)}}>Delete</Button>
+                    </CardFooter>
+                  </ResizablePanel>
+                </ResizablePanelGroup>
+              </Card> 
+          ) 
+        })}
+      </ScrollArea>
+    )
 }
