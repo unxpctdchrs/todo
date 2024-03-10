@@ -1,20 +1,8 @@
 'use server'
 import DATA from '@/app/DATA'
 
-const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    // Running in the browser
-    return ''; // No need for a base URL, use relative URLs
-  } else {
-    // Running on the server (Node.js)
-    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-    const host = process.env.VERCEL_URL || 'localhost:3000';
-    return `${protocol}://${host}`;
-  }
-};
-
-const BASE_URL = getBaseUrl();
-const URL = `https://todo-tau-sage.vercel.app/api/mysql/todo/`;
+// const URL = `https://todo-tau-sage.vercel.app/api/mysql/todo/`;
+const URL = `http://localhost:3000/api/mysql/todo`
 
 export async function getData() {
   try {
