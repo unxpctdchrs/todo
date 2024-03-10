@@ -47,7 +47,7 @@ export async function DELETE(request: Request) {
     const id = request.url.slice(request.url.lastIndexOf('/') + 1)
     const query = "DELETE FROM list WHERE id = ?";
     const values = [id];
-    const results: RowDataPacket = await executeQuery(query, values);
+    const results: RowDataPacket = await executeQuery(query, values) as RowDataPacket;
     
     if (results.affectedRows === 0) {
         return NextResponse.json({ "message": "Id not found" });
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     const data = await request.json();
     const query = "INSERT INTO list (title, description, dueDate, isCompleted) VALUES (?, ?, ?, ?)";
     const values = [data.title, data.description, data.dueDate, data.isCompleted];
-    const results: RowDataPacket = await executeQuery(query, values);
+    const results: RowDataPacket = await executeQuery(query, values) as RowDataPacket;
     
     return NextResponse.json({ id: results.insertId });
 }
